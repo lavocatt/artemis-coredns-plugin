@@ -15,9 +15,9 @@ RUN sed -i '/^kubernetes:kubernetes$/i emptyendpoints:emptyendpoints' plugin.cfg
 # Add replace directive to use local plugin
 RUN echo 'replace emptyendpoints => /plugin' >> go.mod
 
-# Generate and build
+# Tidy dependencies and build
 RUN go generate
-RUN go get emptyendpoints
+RUN go mod tidy
 RUN CGO_ENABLED=0 go build -o coredns
 
 # Final image
