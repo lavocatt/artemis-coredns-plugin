@@ -9,7 +9,8 @@ COPY . /plugin
 
 WORKDIR /coredns
 
-# Add plugin to plugin.cfg (before kubernetes plugin)
+# Add plugin to plugin.cfg BEFORE kubernetes plugin
+# This is critical - the plugin wraps ResponseWriter to intercept responses
 RUN sed -i '/^kubernetes:kubernetes$/i emptyendpoints:emptyendpoints' plugin.cfg
 
 # Add replace directive to use local plugin

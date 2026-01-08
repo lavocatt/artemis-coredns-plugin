@@ -21,12 +21,10 @@ func setup(c *caddy.Controller) error {
 		e.Namespaces = c.RemainingArgs()
 	}
 
-	// Create Kubernetes client
-	client, err := NewClient()
-	if err != nil {
-		log.Warningf("emptyendpoints: failed to create k8s client: %v", err)
+	if len(e.Namespaces) > 0 {
+		log.Infof("emptyendpoints: watching namespaces: %v", e.Namespaces)
 	} else {
-		e.client = client
+		log.Info("emptyendpoints: watching all namespaces")
 	}
 
 	dnsserver.GetConfig(c).AddPlugin(func(next plugin.Handler) plugin.Handler {
